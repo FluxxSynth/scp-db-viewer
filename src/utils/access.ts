@@ -1,7 +1,7 @@
 import { commands } from "./commands";
 import type { CommandResult } from "./commands";
 import { fetchAndParseArticle } from "./wiki-parser";
-import { formatScpNumber, stripHTML } from "./helpers";
+import { formatScpNumber, sanitizeHTML, stripHTML } from "./helpers";
 import { formatClassification } from "./commandUtils";
 
 commands.access = {

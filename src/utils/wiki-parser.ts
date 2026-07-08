@@ -81,7 +81,7 @@ function parseImages($: cheerio.CheerioAPI): string[] {
     $("div.scp-image-block img, div#page-content img").each((_, img) => {
         const src = $(img).attr("src");
         if (src) {
-            const full = src.startsWith("http") ? src : `http://scp-wiki.wikidot.com${src.startsWith("/") ? "" : "/"}${src}`;
+            const full = src.startsWith("http") ? src : `https://scp-wiki.wikidot.com${src.startsWith("/") ? "" : "/"}${src}`;
             urls.push(full);
         }
     });
@@ -124,9 +124,14 @@ function parseContent($: cheerio.CheerioAPI): { rawHtml: string; plainText: stri
 }
 
 export async function fetchAndParseArticle(query: string): Promise<ArticleData> {
-    const url = `http://scp-wiki.wikidot.com/${query}`;
+    const url = `https://scp-wiki.wikidot.com/${query}`;
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        headers: {
+            "User-Agent": "SCP-DB-Viewer/1.0 (Electron; Terminal; Research)",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        },
+    });
     const html = await response.text();
     const $ = cheerio.load(html);
 
