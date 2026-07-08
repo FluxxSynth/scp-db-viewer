@@ -1,52 +1,394 @@
-/* Classification bar (styled header above article content) */
-.class-bar {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid #333;
-    border-radius: 4px;
-    padding: 12px 16px;
-    margin: 8px 0 16px 0;
+/* Anomaly class bar — styled like the SCP wiki component */
+.rendered-content .anom-bar-container {
+    display: flex;
+    width: 100%;
+    margin: 12px 0;
+    font-family: sans-serif;
+    box-sizing: border-box;
 }
 
-.class-bar-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: #0f0;
-    margin-bottom: 10px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid #333;
-}
-
-.class-bar-grid {
+.rendered-content .anom-bar {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    grid-template-rows: auto auto;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid #333;
+    padding: 12px;
 }
 
-@media (max-width: 600px) {
-    .class-bar-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+/* TOP BOX: Item#, bars, Level */
+.rendered-content .anom-bar .top-box {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #333;
+    margin-bottom: 8px;
 }
 
-.class-bar-item {
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.04);
+.rendered-content .top-left-box {
     display: flex;
     flex-direction: column;
+    gap: 2px;
 }
 
-.class-bar-label {
-    font-size: 10px;
+.rendered-content .top-left-box .item {
+    font-size: 11px;
     text-transform: uppercase;
     color: #888;
     letter-spacing: 1px;
-    margin-bottom: 4px;
 }
 
-.class-bar-value {
+.rendered-content .top-left-box .number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0f0;
+    margin-top: -2px;
+}
+
+/* Center bars */
+.rendered-content .top-center-box {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.rendered-content .top-center-box > div {
+    height: 100%;
+    min-height: 40px;
+    width: 8px;
+    border-radius: 2px;
+    opacity: 0.6;
+}
+
+.rendered-content .top-center-box .bar-one,
+.rendered-content .top-center-box .bar-two { background: #C40233; }
+.rendered-content .top-center-box .bar-three,
+.rendered-content .top-center-box .bar-four { background: #FFD300; }
+.rendered-content .top-center-box .bar-five,
+.rendered-content .top-center-box .bar-six { background: #0087BD; }
+
+/* Level badge */
+.rendered-content .top-right-box {
+    text-align: right;
+}
+
+.rendered-content .top-right-box .level {
+    display: inline-block;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 3px;
+    color: #000;
+}
+
+/* Level colors based on container class */
+.rendered-content .anom-bar-container.clear-1 .level,
+.rendered-content .anom-bar-container.safe .level { background: #009F6B; }
+.rendered-content .anom-bar-container.clear-2 .level { background: #0087BD; color: #fff; }
+.rendered-content .anom-bar-container.clear-3 .level { background: #FFD300; }
+.rendered-content .anom-bar-container.clear-4 .level { background: #FF6D00; }
+.rendered-content .anom-bar-container.clear-5 .level { background: #C40233; color: #fff; }
+
+/* BOTTOM BOX: classification text + diamond */
+.rendered-content .anom-bar .bottom-box {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: start;
+}
+
+/* Text part — classification info */
+.rendered-content .bottom-box .text-part {
+    display: grid;
+    grid-template-areas:
+        "main-class disrupt-class"
+        "main-class risk-class";
+    grid-template-columns: 3fr 2fr;
+    gap: 4px;
+    text-transform: uppercase;
+}
+
+.rendered-content .text-part .main-class {
+    grid-area: main-class;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4px 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Main class colors */
+.rendered-content .anom-bar-container.euclid .main-class {
+    border-left: 4px solid #FFD300;
+}
+
+.rendered-content .anom-bar-container.keter .main-class {
+    border-left: 4px solid #C40233;
+}
+
+.rendered-content .anom-bar-container.safe .main-class {
+    border-left: 4px solid #009F6B;
+}
+
+.rendered-content .text-part .contain-class {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+}
+
+.rendered-content .text-part .class-category {
+    font-size: 10px;
+    color: #888;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.rendered-content .text-part .class-text {
     font-size: 18px;
     font-weight: bold;
-    font-family: monospace;
+    text-align: right;
+}
+
+.rendered-content .text-part .second-class {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 2px;
+    font-size: 12px;
+    color: #888;
+}
+
+.rendered-content .text-part .second-class .class-text {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.rendered-content .text-part .disrupt-class,
+.rendered-content .text-part .risk-class {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Disruption class colors */
+.rendered-content .anom-bar-container.dark .disrupt-class {
+    border-left: 4px solid #009F6B;
+}
+.rendered-content .anom-bar-container.vlam .disrupt-class {
+    border-left: 4px solid #0087BD;
+}
+.rendered-content .anom-bar-container.keneq .disrupt-class {
+    border-left: 4px solid #FFD300;
+}
+.rendered-content .anom-bar-container.amida .disrupt-class {
+    border-left: 4px solid #C40233;
+}
+.rendered-content .anom-bar-container.ekhi .disrupt-class {
+    border-left: 4px solid #FF6D00;
+}
+
+/* Risk class colors */
+.rendered-content .anom-bar-container.caution .risk-class {
+    border-left: 4px solid #0087BD;
+}
+.rendered-content .anom-bar-container.notice .risk-class {
+    border-left: 4px solid #009F6B;
+}
+.rendered-content .anom-bar-container.warning .risk-class {
+    border-left: 4px solid #FFD300;
+}
+.rendered-content .anom-bar-container.danger .risk-class {
+    border-left: 4px solid #FF6D00;
+}
+.rendered-content .anom-bar-container.critical .risk-class {
+    border-left: 4px solid #C40233;
+}
+
+.rendered-content .text-part .disrupt-class .class-category,
+.rendered-content .text-part .risk-class .class-category {
+    font-size: 9px;
+}
+
+.rendered-content .text-part .disrupt-class .class-text,
+.rendered-content .text-part .risk-class .class-text {
+    font-size: 15px;
+}
+
+/* Danger diamond indicator */
+.rendered-content .diamond-part {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+.rendered-content .danger-diamond {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Octagon shape */
+.rendered-content .danger-diamond .octagon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
+}
+
+/* Class-based octagon colors */
+.rendered-content .anom-bar-container.euclid .octagon {
+    background: rgba(255, 211, 0, 0.15);
+    border: 2px solid rgba(255, 211, 0, 0.5);
+}
+.rendered-content .anom-bar-container.dark .octagon {
+    background: rgba(0, 159, 107, 0.15);
+    border: 2px solid rgba(0, 159, 107, 0.5);
+}
+.rendered-content .anom-bar-container.caution .octagon {
+    background: rgba(0, 135, 189, 0.15);
+    border: 2px solid rgba(0, 135, 189, 0.5);
+}
+
+/* Arrows (between octagon and diamond) */
+.rendered-content .danger-diamond .arrows {
+    display: none;
+}
+
+/* Quadrants for the diamond indicator */
+.rendered-content .danger-diamond .quadrants {
+    position: absolute;
+    width: 88%;
+    height: 88%;
+    top: 6%;
+    left: 6%;
+}
+
+.rendered-content .quadrants > div {
+    position: absolute;
+    width: 67%;
+    padding-bottom: 50%;
+    clip-path: polygon(22% 0, 77% 0, 100% 31%, 50% 100%, 0 31%);
+    transform-origin: bottom center;
+}
+
+.rendered-content .quadrants .top-quad {
+    top: 2%;
+    left: 16%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.rendered-content .quadrants .right-quad {
+    top: 18%;
+    left: 55%;
+    transform: rotate(90deg);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.rendered-content .quadrants .left-quad {
+    top: 18%;
+    left: -22%;
+    transform: rotate(270deg);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.rendered-content .quadrants .bottom-quad {
+    top: 42%;
+    left: 16%;
+    transform: rotate(180deg);
+    background: transparent;
+}
+
+/* Diamond quadrant colors */
+.rendered-content .anom-bar-container.euclid .quadrants .top-quad {
+    background: rgba(255, 211, 0, 0.35);
+}
+
+.rendered-content .anom-bar-container.dark .quadrants .left-quad {
+    background: rgba(0, 159, 107, 0.35);
+}
+
+.rendered-content .anom-bar-container.caution .quadrants .right-quad {
+    background: rgba(0, 135, 189, 0.35);
+}
+
+/* Icon circles */
+.rendered-content .danger-diamond .top-icon,
+.rendered-content .danger-diamond .right-icon,
+.rendered-content .danger-diamond .left-icon,
+.rendered-content .danger-diamond .bottom-icon {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.rendered-content .danger-diamond .top-icon {
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.rendered-content .danger-diamond .right-icon {
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.rendered-content .danger-diamond .left-icon {
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.rendered-content .danger-diamond .bottom-icon {
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none; /* hidden unless esoteric */
+}
+
+/* Icon colors */
+.rendered-content .anom-bar-container.euclid .top-icon {
+    background: #FFD300;
+    border-color: #FFD300;
+}
+
+.rendered-content .anom-bar-container.dark .left-icon {
+    background: #009F6B;
+    border-color: #009F6B;
+}
+
+.rendered-content .anom-bar-container.caution .right-icon {
+    background: #0087BD;
+    border-color: #0087BD;
+}
+
+/* Hide the raw link text */
+.rendered-content .danger-diamond > a {
+    display: none;
 }
 
 /* Article content styling within rendered-content */

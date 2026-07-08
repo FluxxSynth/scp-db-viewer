@@ -123,7 +123,6 @@ function parseContent($: cheerio.CheerioAPI): { rawHtml: string; plainText: stri
         "div.page-info-panel, " +
         "div.rating-module-panel, " +
         "div.page-tags, " +
-        "div.anom-bar-container, " +
         "div[style*='display: none'], " +
         "iframe"
     ).remove();
