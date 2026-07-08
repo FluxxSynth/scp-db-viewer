@@ -4,17 +4,17 @@
   "description": "SCP Foundation Database Viewer — Terminal Edition",
   "main": "dist/main.js",
   "scripts": {
-    "build": "tsc && copyfiles -f src/pages/*.html dist/pages/ && copyfiles -f src/components/styles/*.css dist/components/styles/ && copyfiles -f src/components/images/*.png dist/components/images/",
+    "build": "esbuild src/main.ts --bundle --outfile=dist/main.js --platform=node --format=cjs --external:electron && esbuild src/renderer.ts --bundle --outfile=dist/renderer.js --platform=browser --format=iife && copyfiles -f src/pages/*.html dist/pages/ && copyfiles -f src/components/styles/*.css dist/components/styles/ && copyfiles -f src/components/images/*.png dist/components/images/",
     "start": "npm run build && electron .",
-    "dev": "tsc --watch & copyfiles -f src/pages/*.html dist/pages/ && electron ."
+    "dev": "esbuild src/renderer.ts --bundle --outfile=dist/renderer.js --platform=browser --format=iife && esbuild src/main.ts --bundle --outfile=dist/main.js --platform=node --format=cjs --external:electron && copyfiles -f src/pages/*.html dist/pages/ && copyfiles -f src/components/styles/*.css dist/components/styles/ && copyfiles -f src/components/images/*.png dist/components/images/ && electron ."
   },
   "dependencies": {
-    "axios": "^1.6.7",
     "cheerio": "^1.0.0-rc.10",
     "copyfiles": "^2.4.1"
   },
   "devDependencies": {
     "electron": "^29.0.1",
+    "esbuild": "^0.28.1",
     "typescript": "^5.3.3"
   }
 }
