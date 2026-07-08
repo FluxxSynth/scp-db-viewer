@@ -26,7 +26,7 @@ commands.access = {
                 article.classification.risk
             );
 
-            const content = [
+            const textContent = [
                 `\n  ${"═".repeat(40)}`,
                 `  ${article.title}`,
                 `  ${"═".repeat(40)}`,
@@ -40,7 +40,13 @@ commands.access = {
                 article.plainText,
             ].join("\n");
 
-            return { type: "text", content };
+            const imagesHtml = article.imageUrls.length
+                ? `<div class="rendered-content">${article.imageUrls.map((url) =>
+                    `<div class="scp-image-block"><img src="${sanitizeHTML(url)}" loading="lazy" /></div>`
+                ).join("")}</div>`
+                : "";
+
+            return { type: "html", content: textContent + imagesHtml };
         } catch (err) {
             return {
                 type: "error",
