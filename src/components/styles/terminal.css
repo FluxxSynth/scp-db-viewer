@@ -186,28 +186,20 @@ html, body {
     background: #333;
 }
 
-/* Cursor */
-.cursor-block::after {
-    display: inline-block;
-    content: '';
-    width: 8px;
-    height: 16px;
+.cursor-block {
     background: #0f0;
-    animation: blink 1s step-end infinite;
-    vertical-align: text-bottom;
-    margin-left: 1px;
+    color: #000;
+    animation: cursor-blink 1s step-end infinite;
 }
 
-.pause-cursor::after {
-    animation: none !important;
-}
-
-.pause-cursor-unfocused::after {
-    background: transparent !important;
-}
-
-@keyframes blink {
+@keyframes cursor-blink {
     50% { opacity: 0; }
+}
+
+.pause-cursor-unfocused .cursor-block {
+    background: transparent;
+    color: inherit;
+    animation: none;
 }
 
 /* Status colors */

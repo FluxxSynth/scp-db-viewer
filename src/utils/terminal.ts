@@ -47,7 +47,8 @@ function renderPrompt() {
     if (cursorEl) cursorEl.remove();
 
     const beforeCursor = currentInput.slice(0, cursorPos);
-    const atCursor = currentInput[cursorPos] || " ";
+    const atChar = currentInput[cursorPos];
+    const atCursor = atChar === undefined ? "\u00A0" : atChar === " " ? "\u00A0" : atChar;
     const afterCursor = currentInput.slice(cursorPos + 1);
 
     const line = document.createElement("div");
