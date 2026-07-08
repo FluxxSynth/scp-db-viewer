@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP DATABASE — TERMINAL v1.0</title>
+    <link rel="stylesheet" href="../components/styles/terminal.css">
+    <link rel="stylesheet" href="../components/styles/content.css">
+</head>
+<body>
+    <div id="titlebar">
+        <div id="titlebar-left">
+            <div id="menu-buttons">
+                <div class="menu-item" id="file-button">File</div>
+                <div class="menu-item" id="view-button">View</div>
+            </div>
+        </div>
+        <div id="titlebar-center">
+            <div id="logo">
+                <span id="logo-scp">SCP FOUNDATION</span>
+                <span id="logo-motto">SECURE. CONTAIN. PROTECT.</span>
+            </div>
+        </div>
+        <div id="titlebar-right">
+            <div class="win-btn" id="minimize">&#x2500;</div>
+            <div class="win-btn" id="maximize">&#x25A1;</div>
+            <div class="win-btn" id="close">&#x2715;</div>
+        </div>
+    </div>
+
+    <div id="toolbar">
+        <div id="status-area">
+            <span class="status-label">STATUS</span>
+            <span class="status-box" id="onlinestatus">CHECKING</span>
+            <span class="status-label">CODE</span>
+            <span class="status-box" id="statuscode">N/A</span>
+        </div>
+        <div id="personnel-area">
+            <span class="personnel-title">SCP Containment Specialist (Level 5)</span>
+            <span class="personnel-site">SITE-19</span>
+            <button type="button" id="ascii-toggle">[ ASCII: OFF ]</button>
+        </div>
+    </div>
+
+    <div id="terminal-container">
+        <div id="terminal-window">
+            <div id="terminal-content"></div>
+        </div>
+    </div>
+
+    <script src="../components/scripts/terminal.js"></script>
+    <script src="../renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+/* Article content styling within rendered-content */
+.rendered-content blockquote {
+    border-left: 3px solid #444;
+    padding-left: 12px;
+    margin: 8px 0;
+    color: #bbb;
+}
+
+.rendered-content a {
+    color: #0f0;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.rendered-content a:hover {
+    color: #fff;
+    background: #0f0;
+}
+
+.rendered-content .scp-image-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 12px auto;
+    padding: 8px;
+    border: 1px solid #333;
+    max-width: 300px;
+}
+
+.rendered-content .scp-image-block img {
+    max-width: 100%;
+    height: auto;
+}
+
+.rendered-content .scp-image-caption {
+    font-size: 11px;
+    color: #888;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.rendered-content table {
+    border-collapse: collapse;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.rendered-content th, .rendered-content td {
+    border: 1px solid #333;
+    padding: 6px 10px;
+}
+
+.rendered-content th {
+    background: #111;
+    color: #0f0;
+}
+
+.rendered-content .collapsible-block-folded {
+    display: block;
+    cursor: pointer;
+    color: #888;
+}
+
+.rendered-content .collapsible-block-folded:hover {
+    color: #0f0;
+}
+
+.rendered-content .collapsible-block-unfolded {
+    display: none;
+}
+
+.rendered-content .collapsible-block-unfolded.open {
+    display: block;
+}
+
+.rendered-content .warning-box {
+    border: 2px solid #600;
+    padding: 16px;
+    text-align: center;
+    margin: 12px 0;
+}
