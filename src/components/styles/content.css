@@ -97,9 +97,19 @@
 /* BOTTOM BOX: classification text + diamond */
 .rendered-content .anom-bar .bottom-box {
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 12px;
-    align-items: start;
+    grid-template-columns: 3fr 2fr;
+    grid-template-areas: "text-part diamond-part";
+    gap: 4px;
+    text-transform: uppercase;
+    align-items: stretch;
+}
+
+.rendered-content .bottom-box > .text-part {
+    grid-area: text-part;
+}
+
+.rendered-content .bottom-box > .diamond-part {
+    grid-area: diamond-part;
 }
 
 /* Text part — classification info */
@@ -121,19 +131,57 @@
     padding: 4px 6px;
     border-radius: 3px;
     background: rgba(255, 255, 255, 0.04);
+    position: relative;
+    padding-right: 3.5rem;
+}
+
+/* Containment class icon circle between text and diamond */
+.rendered-content .text-part > .main-class::before {
+    content: "";
+    position: absolute;
+    top: calc(50% - 1.75rem);
+    right: 0.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    border: 0.25rem solid #0c0c0c;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 1;
 }
 
 /* Main class colors */
 .rendered-content .anom-bar-container.euclid .main-class {
     border-left: 4px solid #FFD300;
 }
+.rendered-content .anom-bar-container.euclid .main-class::before {
+    background-color: #FFD300;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/euclid-icon.svg");
+}
 
 .rendered-content .anom-bar-container.keter .main-class {
     border-left: 4px solid #C40233;
 }
+.rendered-content .anom-bar-container.keter .main-class::before {
+    background-color: #C40233;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/keter-icon.svg");
+}
 
 .rendered-content .anom-bar-container.safe .main-class {
     border-left: 4px solid #009F6B;
+}
+.rendered-content .anom-bar-container.safe .main-class::before {
+    background-color: #009F6B;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/safe-icon.svg");
+}
+
+.rendered-content .anom-bar-container.neutralized .main-class {
+    border-left: 4px solid #666;
+}
+.rendered-content .anom-bar-container.neutralized .main-class::before {
+    background-color: #666;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/neutralized-icon.svg");
 }
 
 .rendered-content .text-part .contain-class {
@@ -224,212 +272,279 @@
     font-size: 15px;
 }
 
-/* Danger diamond indicator */
+/* Danger diamond indicator — matches SCP wiki layout exactly */
 .rendered-content .diamond-part {
+    width: 100%;
+    padding-top: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
+    position: relative;
+    grid-area: diamond-part;
     flex-shrink: 0;
 }
 
 .rendered-content .danger-diamond {
-    position: relative;
-    width: 72px;
-    height: 72px;
+    position: absolute;
+    width: 95%;
+    height: 95%;
+    top: 2.5%;
+    left: 5%;
+}
+
+/* Hide the raw link text */
+.rendered-content .danger-diamond > a {
+    color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 3;
+}
+
+.rendered-content .danger-diamond > br {
+    display: none;
+}
+
+/* Arrows — SVG mask pattern */
+.rendered-content .danger-diamond > .arrows {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #0c0c0c;
+    -webkit-mask-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg version='1.2' baseProfile='tiny' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 160 160' xml:space='preserve'%3E%3Cpath fill='%23010101' d='M136.1,133.3l23.9-23.9V51.2l-24-24l19.1-19.1l4.9,4.9l0-12.9l-12.9,0l4.9,4.9L133,24.2l-24-24H51l-24,24 L8,5.2l4.9-4.9L0,0.2l0,12.9l4.9-4.9L24,27.3l-24,24v58.2l23.9,23.9l-19,19L0,147.3l0,12.9l12.9,0L8,155.3l19-19l23.9,23.9h58.4 l23.9-23.9l19,19l-4.9,4.9l12.9,0l0-12.9l-4.9,4.9L136.1,133.3z M155.7,53v54.6l-22.6,22.6l-50-50L133,30.3L155.7,53z M52.8,4.5 h54.4l22.7,22.7L80,77.2L30.1,27.3L52.8,4.5z M4.3,107.6V53L27,30.3L77,80.2l-50,50L4.3,107.6z M107.4,155.9H52.6L30,133.3l50-50 l50,50L107.4,155.9z'/%3E%3C/svg%3E%0A");
+    mask-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='utf-8'%3F%3E%3Csvg version='1.2' baseProfile='tiny' id='Layer_1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' x='0px' y='0px' viewBox='0 0 160 160' xml:space='preserve'%3E%3Cpath fill='%23010101' d='M136.1,133.3l23.9-23.9V51.2l-24-24l19.1-19.1l4.9,4.9l0-12.9l-12.9,0l4.9,4.9L133,24.2l-24-24H51l-24,24 L8,5.2l4.9-4.9L0,0.2l0,12.9l4.9-4.9L24,27.3l-24,24v58.2l23.9,23.9l-19,19L0,147.3l0,12.9l12.9,0L8,155.3l19-19l23.9,23.9h58.4 l23.9-23.9l19,19l-4.9,4.9l12.9,0l0-12.9l-4.9,4.9L136.1,133.3z M155.7,53v54.6l-22.6,22.6l-50-50L133,30.3L155.7,53z M52.8,4.5 h54.4l22.7,22.7L80,77.2L30.1,27.3L52.8,4.5z M4.3,107.6V53L27,30.3L77,80.2l-50,50L4.3,107.6z M107.4,155.9H52.6L30,133.3l50-50 l50,50L107.4,155.9z'/%3E%3C/svg%3E%0A");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
 }
 
 /* Octagon shape */
 .rendered-content .danger-diamond .octagon {
-    position: absolute;
     width: 100%;
     height: 100%;
+    position: absolute;
+    z-index: 0;
     clip-path: polygon(30% 0, 70% 0, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0 70%, 0 30%);
 }
 
 /* Class-based octagon colors */
 .rendered-content .anom-bar-container.euclid .octagon {
     background: rgba(255, 211, 0, 0.15);
-    border: 2px solid rgba(255, 211, 0, 0.5);
+}
+.rendered-content .anom-bar-container.keter .octagon {
+    background: rgba(196, 2, 51, 0.15);
+}
+.rendered-content .anom-bar-container.safe .octagon {
+    background: rgba(0, 159, 107, 0.15);
 }
 .rendered-content .anom-bar-container.dark .octagon {
     background: rgba(0, 159, 107, 0.15);
-    border: 2px solid rgba(0, 159, 107, 0.5);
 }
 .rendered-content .anom-bar-container.caution .octagon {
     background: rgba(0, 135, 189, 0.15);
-    border: 2px solid rgba(0, 135, 189, 0.5);
+}
+.rendered-content .anom-bar-container.neutralized .octagon {
+    background: rgba(66, 66, 72, 0.15);
 }
 
-/* Arrows (between octagon and diamond) */
-.rendered-content .danger-diamond .arrows {
-    display: none;
-}
-
-/* Quadrants for the diamond indicator */
+/* Quadrants for the diamond indicator — wiki positioning */
 .rendered-content .danger-diamond .quadrants {
     position: absolute;
-    width: 88%;
-    height: 88%;
-    top: 6%;
-    left: 6%;
+    width: 96%;
+    height: 96%;
+    top: 0;
+    left: 0;
 }
 
-.rendered-content .quadrants > div {
-    position: absolute;
-    width: 67%;
+.rendered-content .danger-diamond .quadrants > div {
+    width: 67.5%;
     padding-bottom: 50%;
+    position: absolute;
+    top: 2.25%;
+    left: 18.5%;
+    background: #0c0c0c;
     clip-path: polygon(22% 0, 77% 0, 100% 31%, 50% 100%, 0 31%);
+    -webkit-transform-origin: bottom center;
     transform-origin: bottom center;
 }
 
 .rendered-content .quadrants .top-quad {
-    top: 2%;
-    left: 16%;
     background: rgba(255, 255, 255, 0.08);
 }
 
 .rendered-content .quadrants .right-quad {
-    top: 18%;
-    left: 55%;
+    -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
-    background: rgba(255, 255, 255, 0.05);
 }
 
 .rendered-content .quadrants .left-quad {
-    top: 18%;
-    left: -22%;
+    -webkit-transform: rotate(270deg);
     transform: rotate(270deg);
-    background: rgba(255, 255, 255, 0.05);
 }
 
 .rendered-content .quadrants .bottom-quad {
-    top: 42%;
-    left: 16%;
-    transform: rotate(180deg);
     background: transparent;
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 /* Diamond quadrant colors */
 .rendered-content .anom-bar-container.euclid .quadrants .top-quad {
-    background: rgba(255, 211, 0, 0.35);
+    background: rgba(255, 211, 0, 0.25);
 }
-
+.rendered-content .anom-bar-container.keter .quadrants .top-quad {
+    background: rgba(196, 2, 51, 0.25);
+}
+.rendered-content .anom-bar-container.safe .quadrants .top-quad {
+    background: rgba(0, 159, 107, 0.25);
+}
 .rendered-content .anom-bar-container.dark .quadrants .left-quad {
-    background: rgba(0, 159, 107, 0.35);
+    background: rgba(0, 159, 107, 0.25);
 }
-
+.rendered-content .anom-bar-container.vlam .quadrants .left-quad {
+    background: rgba(0, 135, 189, 0.25);
+}
+.rendered-content .anom-bar-container.keneq .quadrants .left-quad {
+    background: rgba(255, 211, 0, 0.25);
+}
+.rendered-content .anom-bar-container.amida .quadrants .left-quad {
+    background: rgba(196, 2, 51, 0.25);
+}
+.rendered-content .anom-bar-container.ekhi .quadrants .left-quad {
+    background: rgba(255, 109, 0, 0.25);
+}
 .rendered-content .anom-bar-container.caution .quadrants .right-quad {
-    background: rgba(0, 135, 189, 0.35);
+    background: rgba(0, 135, 189, 0.25);
+}
+.rendered-content .anom-bar-container.notice .quadrants .right-quad {
+    background: rgba(0, 159, 107, 0.25);
+}
+.rendered-content .anom-bar-container.warning .quadrants .right-quad {
+    background: rgba(255, 211, 0, 0.25);
+}
+.rendered-content .anom-bar-container.danger .quadrants .right-quad {
+    background: rgba(255, 109, 0, 0.25);
+}
+.rendered-content .anom-bar-container.critical .quadrants .right-quad {
+    background: rgba(196, 2, 51, 0.25);
 }
 
-/* Icon circles — uses actual SVG icons from the SCP wiki */
+/* Icon circles — positioned like the wiki, SVGs via ::before */
 .rendered-content .danger-diamond .top-icon,
 .rendered-content .danger-diamond .right-icon,
 .rendered-content .danger-diamond .left-icon,
 .rendered-content .danger-diamond .bottom-icon {
     position: absolute;
-    width: 24px;
-    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33%;
+    height: 33%;
     border-radius: 50%;
-    border: 2px solid #555;
+    border: 0.1875rem solid #0c0c0c;
+    overflow: hidden;
     z-index: 2;
-    background-size: 14px 14px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: rgba(0, 0, 0, 0.6);
 }
 
-.rendered-content .danger-diamond .top-icon {
-    top: 1px;
-    left: 50%;
-    transform: translateX(-50%);
+.rendered-content .danger-diamond > .top-icon {
+    top: 0.25rem;
+    left: 33.5%;
+}
+.rendered-content .danger-diamond > .right-icon {
+    right: 0.25rem;
+    top: 33.5%;
+}
+.rendered-content .danger-diamond > .left-icon {
+    left: 0.25rem;
+    top: 33.5%;
+}
+.rendered-content .danger-diamond > .bottom-icon {
+    bottom: 0.25rem;
+    left: 33.5%;
 }
 
-.rendered-content .danger-diamond .right-icon {
-    right: 1px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.rendered-content .danger-diamond .left-icon {
-    left: 1px;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.rendered-content .danger-diamond .bottom-icon {
-    bottom: 1px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none; /* hidden unless esoteric */
-}
-
-/* Main containment class icons (top) */
-.rendered-content .anom-bar-container.safe .top-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/safe-icon.svg");
-    border-color: #009F6B;
-}
-.rendered-content .anom-bar-container.euclid .top-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/euclid-icon.svg");
-    border-color: #FFD300;
-}
-.rendered-content .anom-bar-container.keter .top-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/keter-icon.svg");
-    border-color: #C40233;
-}
-
-/* Disruption class icons (left) */
-.rendered-content .anom-bar-container.dark .left-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/dark-icon.svg");
-    border-color: #009F6B;
-}
-.rendered-content .anom-bar-container.vlam .left-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/vlam-icon.svg");
-    border-color: #0087BD;
-}
-.rendered-content .anom-bar-container.keneq .left-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/keneq-icon.svg");
-    border-color: #FFD300;
-}
-.rendered-content .anom-bar-container.amida .left-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/amida-icon.svg");
-    border-color: #C40233;
-}
-.rendered-content .anom-bar-container.ekhi .left-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/ekhi-icon.svg");
-    border-color: #FF6D00;
-}
-
-/* Risk class icons (right) */
-.rendered-content .anom-bar-container.notice .right-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/notice-icon.svg");
-    border-color: #009F6B;
-}
-.rendered-content .anom-bar-container.caution .right-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/caution-icon.svg");
-    border-color: #0087BD;
-}
-.rendered-content .anom-bar-container.warning .right-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/warning-icon.svg");
-    border-color: #FFD300;
-}
-.rendered-content .anom-bar-container.danger .right-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/danger-icon.svg");
-    border-color: #FF6D00;
-}
-.rendered-content .anom-bar-container.critical .right-icon {
-    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/critical-icon.svg");
-    border-color: #C40233;
-}
-
-/* Hide the raw link text */
-.rendered-content .danger-diamond > a {
+.rendered-content .anom-bar-container:not(.esoteric) .danger-diamond > .bottom-icon {
     display: none;
+}
+
+/* Icon backgrounds via ::before — matches wiki pattern */
+.rendered-content .danger-diamond > .top-icon::before,
+.rendered-content .danger-diamond > .right-icon::before,
+.rendered-content .danger-diamond > .left-icon::before,
+.rendered-content .danger-diamond > .bottom-icon::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+/* Top icon — containment class */
+.rendered-content .anom-bar-container.safe .danger-diamond > .top-icon::before {
+    background-color: #009F6B;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/safe-icon.svg");
+}
+.rendered-content .anom-bar-container.euclid .danger-diamond > .top-icon::before {
+    background-color: #FFD300;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/euclid-icon.svg");
+}
+.rendered-content .anom-bar-container.keter .danger-diamond > .top-icon::before {
+    background-color: #C40233;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/keter-icon.svg");
+}
+
+/* Left icon — disruption class */
+.rendered-content .anom-bar-container.dark .danger-diamond > .left-icon::before {
+    background-color: #009F6B;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/dark-icon.svg");
+}
+.rendered-content .anom-bar-container.vlam .danger-diamond > .left-icon::before {
+    background-color: #0087BD;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/vlam-icon.svg");
+}
+.rendered-content .anom-bar-container.keneq .danger-diamond > .left-icon::before {
+    background-color: #FFD300;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/keneq-icon.svg");
+}
+.rendered-content .anom-bar-container.amida .danger-diamond > .left-icon::before {
+    background-color: #C40233;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/amida-icon.svg");
+}
+.rendered-content .anom-bar-container.ekhi .danger-diamond > .left-icon::before {
+    background-color: #FF6D00;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/ekhi-icon.svg");
+}
+
+/* Right icon — risk class */
+.rendered-content .anom-bar-container.notice .danger-diamond > .right-icon::before {
+    background-color: #009F6B;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/notice-icon.svg");
+}
+.rendered-content .anom-bar-container.caution .danger-diamond > .right-icon::before {
+    background-color: #0087BD;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/caution-icon.svg");
+}
+.rendered-content .anom-bar-container.warning .danger-diamond > .right-icon::before {
+    background-color: #FFD300;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/warning-icon.svg");
+}
+.rendered-content .anom-bar-container.danger .danger-diamond > .right-icon::before {
+    background-color: #FF6D00;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/danger-icon.svg");
+}
+.rendered-content .anom-bar-container.critical .danger-diamond > .right-icon::before {
+    background-color: #C40233;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/critical-icon.svg");
 }
 
 /* Title header for articles without anomaly class bar */
