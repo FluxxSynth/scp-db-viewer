@@ -1,4 +1,4 @@
-import { BrowserWindow, ipcMain, app } from "electron";
+import { BrowserWindow, ipcMain, app, shell } from "electron";
 import { join } from "path";
 
 let mainWindow: BrowserWindow;
@@ -20,6 +20,13 @@ function createWindow() {
     mainWindow.on("closed", () => app.quit());
     mainWindow.on("blur", () => mainWindow.webContents.send("unfocused"));
     mainWindow.on("focus", () => mainWindow.webContents.send("focused"));
+    // Prevent navigation away from the app
+    mainWindow.webContents.on("will-navigate", (event) => {
+        event.preventDefault();
+    });
+    mainWindow.webContents.setWindowOpenHandler(() => {
+        return { action: "deny" };
+    });
 }
 
 app.on("ready", createWindow);
@@ -40,6 +47,13 @@ ipcMain.on("maximize", () => {
     const win = BrowserWindow.getFocusedWindow();
     if (win) {
         win.isMaximized() ? win.unmaximize() : win.maximize();
+    }
+});
+
+// Open external links in the default browser
+ipcMain.handle("open-external", (_event, url: string) => {
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+        shell.openExternal(url);
     }
 });
 

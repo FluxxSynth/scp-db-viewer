@@ -31,6 +31,20 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Intercept link clicks in rendered content — open in system browser
+    document.getElementById("terminal-content")?.addEventListener("click", (e) => {
+        const link = (e.target as HTMLElement).closest("a");
+        if (!link) return;
+        const href = link.getAttribute("href");
+        if (!href || href.startsWith("#") || href.startsWith("javascript:")) return;
+        e.preventDefault();
+        const fullUrl = href.startsWith("http")
+            ? href
+            : `https://scp-wiki.wikidot.com${href.startsWith("/") ? "" : "/"}${href}`;
+        const ipc = (window as any).require?.("electron")?.ipcRenderer;
+        if (ipc) ipc.invoke("open-external", fullUrl);
+    });
+
     updateOnlineStatus();
     window.addEventListener("online", updateOnlineStatus);
     window.addEventListener("offline", updateOnlineStatus);
