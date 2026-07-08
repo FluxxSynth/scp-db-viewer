@@ -61,7 +61,10 @@ function parseClassification($: cheerio.CheerioAPI): Classification {
     // Fallback: extract from article content (classic format)
     if (def.class === "UNCLASSIFIED") {
         const pageText = $("#page-content").text();
-        const classMatch = pageText.match(/Object\s+Class:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
+        let classMatch = pageText.match(/Object\s+Class:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
+        if (!classMatch) {
+            classMatch = pageText.match(/Containment\s+Class:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
+        }
         if (classMatch) {
             def.class = classMatch[1].trim();
             const containMatch = pageText.match(/Containment(?:\s+Class)?:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
@@ -71,6 +74,19 @@ function parseClassification($: cheerio.CheerioAPI): Classification {
             const riskMatch = pageText.match(/Risk(?:\s+Class)?:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
             if (riskMatch) def.risk = riskMatch[1].trim();
         }
+    }
+
+    // Fallback: parse from anomaly-class-bar component (newer articles)
+    if (def.class === "UNCLASSIFIED") {
+        $("div.anom-bar-container div.class-category").each((_, el) => {
+            const $el = $(el);
+            const label = $el.text().trim().toLowerCase();
+            const value = $el.next("div.class-text").text().trim();
+            if (label.includes("containment")) def.class = value;
+            else if (label.includes("secondary")) def.containment = value;
+            else if (label.includes("disruption")) def.disruption = value;
+            else if (label.includes("risk")) def.risk = value;
+        });
     }
 
     return def;
