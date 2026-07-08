@@ -58,6 +58,21 @@ function parseClassification($: cheerio.CheerioAPI): Classification {
         }
     }
 
+    // Fallback: extract from article content (classic format)
+    if (def.class === "UNCLASSIFIED") {
+        const pageText = $("#page-content").text();
+        const classMatch = pageText.match(/Object\s+Class:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
+        if (classMatch) {
+            def.class = classMatch[1].trim();
+            const containMatch = pageText.match(/Containment(?:\s+Class)?:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
+            if (containMatch) def.containment = containMatch[1].trim();
+            const disruptMatch = pageText.match(/Disruption(?:\s+Class)?:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
+            if (disruptMatch) def.disruption = disruptMatch[1].trim();
+            const riskMatch = pageText.match(/Risk(?:\s+Class)?:\s*(.+?)(?:\[|<\/|\.|,|\n|$)/i);
+            if (riskMatch) def.risk = riskMatch[1].trim();
+        }
+    }
+
     return def;
 }
 
