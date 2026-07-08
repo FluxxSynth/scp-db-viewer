@@ -37,9 +37,7 @@ commands.access = {
                 `  ARTICLE`,
                 `  ${"─".repeat(40)}`,
                 ``,
-                article.plainText.slice(0, 3000),
-                ``,
-                article.plainText.length > 3000 ? `\n  [Content truncated. ${article.plainText.length - 3000} more characters]\n` : "",
+                article.plainText,
             ].join("\n");
 
             return { type: "text", content };
