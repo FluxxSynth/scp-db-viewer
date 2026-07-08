@@ -1,7 +1,7 @@
 import { commands } from "./commands";
 import type { CommandResult } from "./commands";
 import { fetchAndParseArticle } from "./wiki-parser";
-import { formatScpNumber, sanitizeHTML, stripHTML } from "./helpers";
+import { formatScpNumber } from "./helpers";
 import { formatClassification } from "./commandUtils";
 
 commands.access = {
@@ -26,27 +26,26 @@ commands.access = {
                 article.classification.risk
             );
 
-            const textContent = [
-                `\n  ${"═".repeat(40)}`,
-                `  ${article.title}`,
-                `  ${"═".repeat(40)}`,
+            const headerHtml = [
+                `<pre class="article-header">`,
+                `${"═".repeat(40)}`,
+                `${article.title}`,
+                `${"═".repeat(40)}`,
                 ``,
                 classification,
                 ``,
-                `  ${"─".repeat(40)}`,
-                `  ARTICLE`,
-                `  ${"─".repeat(40)}`,
-                ``,
-                article.plainText,
+                `${"─".repeat(40)}`,
+                `ARTICLE`,
+                `${"─".repeat(40)}`,
+                `</pre>`,
             ].join("\n");
 
-            const imagesHtml = article.imageUrls.length
-                ? `<div class="rendered-content">${article.imageUrls.map((url) =>
-                    `<div class="scp-image-block"><img src="${sanitizeHTML(url)}" loading="lazy" /></div>`
-                ).join("")}</div>`
-                : "";
+            const articleHtml = [
+                headerHtml,
+                `<div class="rendered-content">${article.rawHtml}</div>`,
+            ].join("\n");
 
-            return { type: "html", content: textContent + imagesHtml };
+            return { type: "html", content: articleHtml };
         } catch (err) {
             return {
                 type: "error",

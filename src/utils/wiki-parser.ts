@@ -93,10 +93,27 @@ function parseContent($: cheerio.CheerioAPI): { rawHtml: string; plainText: stri
     if (!content.length) return { rawHtml: "", plainText: "" };
 
     const clone = content.clone();
-    clone.find("div.license-area, div.footnotes-footer, div.page-info-panel, div.rating-module-panel").remove();
+    // Strip Wikidot chrome and non-article elements
+    clone.find(
+        "ul.creditRate, " +
+        "div.rate-box-with-credit-button, " +
+        "div.page-rate-widget-box, " +
+        "div.creditButton, " +
+        "div#u-credit-view, " +
+        "div.credit, " +
+        "div.license-area, " +
+        "div.footnotes-footer, " +
+        "div.footnotes, " +
+        "div.page-info-panel, " +
+        "div.rating-module-panel, " +
+        "div.page-tags, " +
+        "div[style*='display: none'], " +
+        "iframe"
+    ).remove();
 
     const rawHtml = clone.html() || "";
 
+    // Generate plain text for the text-based terminal metadata
     let clean = rawHtml
         .replace(/<br\s*\/?>/gi, "\n")
         .replace(/<p[^>]*>/gi, "")
