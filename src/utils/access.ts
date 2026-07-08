@@ -19,7 +19,14 @@ commands.access = {
         try {
             const article = await fetchAndParseArticle(urlSlug);
 
-            const content = `
+            // Add a title header for articles without an anomaly class bar
+            const hasAnomBar = article.rawHtml.includes("anom-bar-container");
+            const titleHeader = hasAnomBar ? "" : `
+<div class="article-title-header">
+  <div class="article-title-text">${article.title}</div>
+</div>`;
+
+            const content = `${titleHeader}
 <div class="rendered-content">
 ${article.rawHtml}
 </div>`;
