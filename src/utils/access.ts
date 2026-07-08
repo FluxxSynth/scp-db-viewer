@@ -1,8 +1,7 @@
 import { commands } from "./commands";
 import type { CommandResult } from "./commands";
 import { fetchAndParseArticle } from "./wiki-parser";
-import { formatScpNumber } from "./helpers";
-import { formatClassification } from "./commandUtils";
+import { formatScpNumber, sanitizeHTML } from "./helpers";
 
 commands.access = {
     name: "access",
@@ -19,29 +18,45 @@ commands.access = {
 
         try {
             const article = await fetchAndParseArticle(urlSlug);
-            const classification = formatClassification(
-                article.classification.class,
-                article.classification.containment,
-                article.classification.disruption,
-                article.classification.risk
-            );
 
-            const headerHtml = [
-                `<pre class="article-header">`,
-                `${"═".repeat(40)}`,
-                `${article.title}`,
-                `${"═".repeat(40)}`,
-                ``,
-                classification,
-                ``,
-                `${"─".repeat(40)}`,
-                `ARTICLE`,
-                `${"─".repeat(40)}`,
-                `</pre>`,
-            ].join("\n");
+            const classColor = (c: string): string => {
+                const map: Record<string, string> = {
+                    safe: "#0f0", euclid: "#ff0", keter: "#f44",
+                    dark: "#0f0", caution: "#0af", warning: "#fa0",
+                    critical: "#f44", notice: "#0f0", danger: "#f80",
+                    none: "#666", neutralized: "#888", pending: "#888",
+                    explained: "#888", amida: "#f44", ekhi: "#f80",
+                    keneq: "#fa0", vlam: "#0af",
+                };
+                return map[c.toLowerCase().trim()] || "#aaa";
+            };
+
+            const bar = article.classification;
+            const classBarHtml = `
+<div class="class-bar">
+  <div class="class-bar-title">${sanitizeHTML(article.title)}</div>
+  <div class="class-bar-grid">
+    <div class="class-bar-item" style="border-left: 4px solid ${classColor(bar.class)}">
+      <span class="class-bar-label">Object Class</span>
+      <span class="class-bar-value">${sanitizeHTML(bar.class.toUpperCase())}</span>
+    </div>
+    <div class="class-bar-item" style="border-left: 4px solid ${classColor(bar.containment)}">
+      <span class="class-bar-label">Containment</span>
+      <span class="class-bar-value">${sanitizeHTML(bar.containment.toUpperCase())}</span>
+    </div>
+    <div class="class-bar-item" style="border-left: 4px solid ${classColor(bar.disruption)}">
+      <span class="class-bar-label">Disruption</span>
+      <span class="class-bar-value">${sanitizeHTML(bar.disruption.toUpperCase())}</span>
+    </div>
+    <div class="class-bar-item" style="border-left: 4px solid ${classColor(bar.risk)}">
+      <span class="class-bar-label">Risk</span>
+      <span class="class-bar-value">${sanitizeHTML(bar.risk.toUpperCase())}</span>
+    </div>
+  </div>
+</div>`;
 
             const articleHtml = [
-                headerHtml,
+                classBarHtml,
                 `<div class="rendered-content">${article.rawHtml}</div>`,
             ].join("\n");
 
