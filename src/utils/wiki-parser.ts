@@ -127,7 +127,10 @@ function parseContent($: cheerio.CheerioAPI): { rawHtml: string; plainText: stri
         "iframe"
     ).remove();
 
-    const rawHtml = clone.html() || "";
+    let rawHtml = clone.html() || "";
+    // Convert http:// image URLs to https:// so they load in Electron (file:// context)
+    rawHtml = rawHtml.replace(/http:\/\/scp-wiki\.wikidot\.com\//g, "https://scp-wiki.wikidot.com/");
+    rawHtml = rawHtml.replace(/http:\/\/scp-wiki\.wdfiles\.com\//g, "https://scp-wiki.wdfiles.com/");
 
     // Generate plain text for the text-based terminal metadata
     let clean = rawHtml
