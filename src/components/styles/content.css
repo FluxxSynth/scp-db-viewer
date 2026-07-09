@@ -94,14 +94,14 @@
 .rendered-content .anom-bar-container.clear-4 .level { background: #FF6D00; }
 .rendered-content .anom-bar-container.clear-5 .level { background: #C40233; color: #fff; }
 
-/* BOTTOM BOX: classification text + diamond */
+/* BOTTOM BOX: classification text + diamond — wiki 6rem fixed height, 1fr text / 6rem diamond */
 .rendered-content .anom-bar .bottom-box {
     display: grid;
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: 1fr 6rem;
     grid-template-areas: "text-part diamond-part";
-    gap: 4px;
+    gap: 0.5rem;
+    height: 6rem;
     text-transform: uppercase;
-    align-items: stretch;
 }
 
 .rendered-content .bottom-box > .text-part {
@@ -133,6 +133,7 @@
     background: rgba(255, 255, 255, 0.04);
     position: relative;
     padding-right: 3.5rem;
+    overflow: hidden;
 }
 
 /* Containment class icon circle between text and diamond */
@@ -272,11 +273,10 @@
     font-size: 15px;
 }
 
-/* Danger diamond indicator — matches SCP wiki layout exactly */
+/* Danger diamond indicator — matches SCP wiki layout exactly (6rem fixed) */
 .rendered-content .diamond-part {
-    width: 100%;
-    padding-top: 100%;
-    display: flex;
+    width: 6rem;
+    height: 6rem;
     position: relative;
     grid-area: diamond-part;
     flex-shrink: 0;
@@ -545,6 +545,116 @@
 .rendered-content .anom-bar-container.critical .danger-diamond > .right-icon::before {
     background-color: #C40233;
     background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/critical-icon.svg");
+}
+
+/* Pending / Neutralized / Explained — these classes hide disruption/risk entirely
+   and center/expand the top (containment) icon in the diamond. The text-part
+   becomes single-column. */
+.rendered-content .anom-bar-container.neutralized .text-part > .main-class::before,
+.rendered-content .anom-bar-container.neutralised .text-part > .main-class::before,
+.rendered-content .anom-bar-container.pending .text-part > .main-class::before,
+.rendered-content .anom-bar-container.explained .text-part > .main-class::before {
+    display: none;
+}
+
+.rendered-content .anom-bar-container.neutralized .second-class,
+.rendered-content .anom-bar-container.neutralized .disrupt-class,
+.rendered-content .anom-bar-container.neutralized .risk-class,
+.rendered-content .anom-bar-container.neutralized .danger-diamond > .quadrants > .left-quad,
+.rendered-content .anom-bar-container.neutralized .danger-diamond > .quadrants > .right-quad,
+.rendered-content .anom-bar-container.neutralized .danger-diamond > .left-icon,
+.rendered-content .anom-bar-container.neutralized .danger-diamond > .right-icon,
+.rendered-content .anom-bar-container.pending .second-class,
+.rendered-content .anom-bar-container.pending .disrupt-class,
+.rendered-content .anom-bar-container.pending .risk-class,
+.rendered-content .anom-bar-container.pending .danger-diamond > .quadrants > .left-quad,
+.rendered-content .anom-bar-container.pending .danger-diamond > .quadrants > .right-quad,
+.rendered-content .anom-bar-container.pending .danger-diamond > .left-icon,
+.rendered-content .anom-bar-container.pending .danger-diamond > .right-icon,
+.rendered-content .anom-bar-container.explained .second-class,
+.rendered-content .anom-bar-container.explained .disrupt-class,
+.rendered-content .anom-bar-container.explained .risk-class,
+.rendered-content .anom-bar-container.explained .danger-diamond > .quadrants > .left-quad,
+.rendered-content .anom-bar-container.explained .danger-diamond > .quadrants > .right-quad,
+.rendered-content .anom-bar-container.explained .danger-diamond > .left-icon,
+.rendered-content .anom-bar-container.explained .danger-diamond > .right-icon {
+    display: none;
+}
+
+.rendered-content .anom-bar-container.neutralized .text-part,
+.rendered-content .anom-bar-container.pending .text-part,
+.rendered-content .anom-bar-container.explained .text-part {
+    grid-template-areas: "main-class";
+    grid-template-columns: 1fr;
+}
+
+.rendered-content .anom-bar-container.neutralized .main-class,
+.rendered-content .anom-bar-container.pending .main-class,
+.rendered-content .anom-bar-container.explained .main-class {
+    padding-right: 0;
+}
+
+.rendered-content .anom-bar-container.neutralized .text-part > .main-class,
+.rendered-content .anom-bar-container.pending .text-part > .main-class {
+    background-color: rgba(12, 12, 12, 0.15);
+    border-left: 0.5rem solid #444;
+}
+
+.rendered-content .anom-bar-container.explained .text-part > .main-class {
+    background-color: rgba(252, 252, 252, 0.08);
+    border-left: 0.5rem solid #888;
+}
+
+/* Enlarge and center top icon for pending/neutralized/explained */
+.rendered-content .anom-bar-container.neutralized .danger-diamond > .top-icon,
+.rendered-content .anom-bar-container.pending .danger-diamond > .top-icon,
+.rendered-content .anom-bar-container.explained .danger-diamond > .top-icon {
+    width: 65%;
+    height: 65%;
+    top: 17.5%;
+    left: 17.5%;
+    border-width: 0.3625rem;
+}
+
+.rendered-content .anom-bar-container.pending .danger-diamond > .top-icon {
+    background-color: #0c0c0c;
+}
+
+/* Neutralized top icon (was previously on main-class::before, now centered in diamond) */
+.rendered-content .anom-bar-container.neutralized .danger-diamond > .top-icon::before {
+    background-color: #424248;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/neutralized-icon.svg");
+}
+
+/* Pending top icon */
+.rendered-content .anom-bar-container.pending .danger-diamond > .top-icon::before {
+    background-color: #0c0c0c;
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/pending-icon.svg");
+}
+
+/* Explained top icon */
+.rendered-content .anom-bar-container.explained .danger-diamond > .top-icon::before {
+    background-color: rgba(252, 252, 252, 0.9);
+    background-image: url("https://scp-wiki.wikidot.com/local--files/component:anomaly-class-bar/explained-icon.svg");
+}
+
+/* Pending/explained top-quadrant color */
+.rendered-content .anom-bar-container.pending .danger-diamond > .quadrants > .top-quad {
+    background: rgba(12, 12, 12, 0.25);
+}
+.rendered-content .anom-bar-container.explained .danger-diamond > .quadrants > .top-quad {
+    background: rgba(252, 252, 252, 0.15);
+}
+.rendered-content .anom-bar-container.neutralized .danger-diamond > .quadrants > .top-quad {
+    background: rgba(66, 66, 72, 0.25);
+}
+
+/* Pending/neutralized/explained octagon */
+.rendered-content .anom-bar-container.pending .octagon {
+    background: rgba(12, 12, 12, 0.15);
+}
+.rendered-content .anom-bar-container.explained .octagon {
+    background: rgba(252, 252, 252, 0.08);
 }
 
 /* Title header for articles without anomaly class bar */
