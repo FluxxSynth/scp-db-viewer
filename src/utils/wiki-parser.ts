@@ -76,8 +76,11 @@ function parseClassification($: cheerio.CheerioAPI): Classification {
         }
     }
 
-    // Fallback: parse from anomaly-class-bar component (newer articles)
-    if (def.class === "UNCLASSIFIED") {
+    // Parse from anomaly-class-bar component — authoritative when present
+    // Runs unconditionally (not gated by UNCLASSIFIED) because the anomaly bar
+    // always has structured data including secondary/disruption/risk that text
+    // regexes miss (e.g. SCP-6046 has 'Secondary Class: anomalous').
+    if ($("div.anom-bar-container").length > 0) {
         $("div.anom-bar-container div.class-category").each((_, el) => {
             const $el = $(el);
             const label = $el.text().trim().toLowerCase();
